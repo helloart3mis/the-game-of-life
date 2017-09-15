@@ -58,6 +58,7 @@ Board.prototype.get = function (coords) {
 Board.prototype.set = function (coords, value) {
   // TODO
   this.cells[this.indexFor(coords)] = value;
+  return this;
 }
 
 /**
@@ -66,6 +67,10 @@ Board.prototype.set = function (coords, value) {
  * Return the count of living neighbors around a given coordinate.
  */
 Board.prototype.livingNeighbors = function ([row, col]) {
+  // could also use this.get and add them together:
+  // ex. return this.get([row-1,col-1])+
+  //            this.get([row-1,col]) +
+  //            etc.
   // TODO: Return the count of living neighbors.
   var count = 0;
   if (this.cells[this.indexFor([row, col + 1])] === 1) {
@@ -102,6 +107,8 @@ Board.prototype.livingNeighbors = function ([row, col]) {
  */
 Board.prototype.toggle = function (coords) {
   // TODO
+  //this.set(coords, !this.get(coords))
+  //return this
   if (this.cells[this.indexFor(coords)] === 1) {
     this.cells[this.indexFor(coords)] = 0;
   }
@@ -118,11 +125,17 @@ Board.prototype.toggle = function (coords) {
  * @param {Number} numLivingNeighbors
  */
 function conway(isAlive, numLivingNeighbors) {
-  if (numLivingNeighbors === 2 || numLivingNeighbors === 3) {
-    return true;
-  } else {
-    return false;
+  //
+  if (!isAlive && numLivingNeighbors === 3) {
+    isAlive = true;
   }
+  else if (isAlive && (numLivingNeighbors === 2 || numLivingNeighbors === 3)) {
+    isAlive = true;
+  } else {
+    isAlive = false;
+  }
+  return isAlive;
+
 }
 
 
@@ -135,6 +148,23 @@ function conway(isAlive, numLivingNeighbors) {
  * @param {(Boolean, Int) -> Boolean} rules (default: conway)
  */
 function tick(present, future, rules = conway) {
-  // TODO
+
+  for (var x = 0; x < present.height; x++) {
+    for (var y = 0; y < present.width; y++) {
+      var coords = [x, y];
+      var living = present.livingNeighbors(coords);
+      var location = present.get(coords);
+      var alive = rules(location, living);
+      future.set(coords, alive);
+
+      //future.set.cells[this.indexFor([x,y])]
+      //first we check to see if the cell is alive (0 or 1)
+      //then we call living neighbors with x and y
+      //then we call rules on these 2 arguments
+      //then call set on coords and value and set this
+      //equal to the future place
+    }
+  }
+
   return [future, present]
 }

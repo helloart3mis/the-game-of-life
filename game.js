@@ -9,7 +9,7 @@ if (mainElement) {
   // TODO: Connect other buttons.
 }
 
-function Life(container, width=12, height=12) {
+function Life(container, width = 12, height = 12) {
   // Create boards for the present and future.
   // Game boards are somewhat expensive to create, so we're going
   // to be reusing them. Each time we step the game, `future`
@@ -19,7 +19,7 @@ function Life(container, width=12, height=12) {
 
   // Create a <table> to hold our cells.
   var table = createTable();
-  
+
   // Put the table in our container
   container.appendChild(table);
 
@@ -38,20 +38,20 @@ function Life(container, width=12, height=12) {
         // We'll put the coordinate on the cell
         // Element itself, letting us fetch it
         // in a click listener later.
-        td.coord = [r, c];        
+        td.coord = [r, c];
         tr.appendChild(td);                            //     </td>
       }
       table.appendChild(tr);                           //   </tr>
     }                                                  //  </table>
-    return table    
+    return table
   }
-  
+
   function toggleCellFromEvent(event) {
     // FIXME: This currently always toggles cell (0, 0).
     // How do we get the coordinate of the cell that was clicked on?
     // HINT: https://developer.mozilla.org/en-US/docs/Web/API/Event/target
     var cell = document.getElementById('0-0'); // ⬅️ Fix me
-    present.toggle(cell.coord)
+    present.toggle(event.target.coord)
     paint()
   }
 
@@ -105,9 +105,9 @@ function Life(container, width=12, height=12) {
 
   function play() {
     // TODO:
-    // Start playing by running the `step` function    
+    // Start playing by running the `step` function
     // automatically repeatedly every fixed time interval
-    
+
     // HINT:
     // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval
   }
@@ -130,5 +130,5 @@ function Life(container, width=12, height=12) {
     // TODO: Randomize the board
   }
 
-  return {play, step, stop, togglePlaying, random, clear}
+  return { play, step, stop, togglePlaying, random, clear }
 };
